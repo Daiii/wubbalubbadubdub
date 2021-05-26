@@ -28,7 +28,7 @@ transient Node<E> last;
 
 //Node的数据结构
 private static class Node<E> {
-		//存储元素
+	//存储元素
   	E item;
   	//后继
     Node<E> next;

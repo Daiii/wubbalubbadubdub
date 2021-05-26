@@ -242,7 +242,7 @@ public Constructor<?>[] determineCandidateConstructors(Class<?> beanClass, final
 }
 ```
 
-
+![Bean的生命周期流程](images/determineCandidateConstructors().png)
 
 ### 6. 实例化
 
@@ -544,7 +544,7 @@ for (BeanPostProcessor processor : getBeanPostProcessors()) {
 
 ### 12. 初始化后
 
-```
+```java
 for (BeanPostProcessor processor : getBeanPostProcessors()) {
     Object current = processor.postProcessAfterInitialization(result, beanName);
     if (current == null) {

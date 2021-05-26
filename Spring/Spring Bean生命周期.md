@@ -1,4 +1,4 @@
-![Bean的生命周期流程](C:\Users\longp\Documents\wubbalubbadubdub\Spring\Bean的生命周期流程.png)
+![Bean的生命周期流程](images/Bean的生命周期流程.png)
 
 ## Bean的生成过程
 

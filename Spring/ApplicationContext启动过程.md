@@ -1,3 +1,5 @@
+[toc]
+
 ## BeanFactoryPostProcessor
 
 叫做BeanFactory的后置处理器，和Bean的后置处理器对比理解。

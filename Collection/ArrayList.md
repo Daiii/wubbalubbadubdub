@@ -1,3 +1,5 @@
+[toc]
+
 ##### 特性
 
 实现了三个标记接口：RandomAccess, Cloneable, java.io.Serializable

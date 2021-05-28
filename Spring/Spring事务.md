@@ -1,3 +1,5 @@
+[toc]
+
 @EnableTransactionManagement注解注入了两个bean：
 
 1. AutoProxyRegistrar

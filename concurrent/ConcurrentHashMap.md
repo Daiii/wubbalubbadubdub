@@ -84,3 +84,84 @@ final V putVal(K key, V value, boolean onlyIfAbsent) {
 }
 ```
 
+
+
+```java
+// 默认通过baseCount去计算size
+// 如果conterCells是空的直接返回baseCount
+// 如果counterCells不会空累加返回
+final long sumCount() {
+	CounterCell[] cs = counterCells;
+	long sum = baseCount;
+	if (cs != null) {
+    for (CounterCell c : cs)
+    if (c != null)
+    sum += c.value;
+	}
+	return sum;
+}
+```
+
+
+
+```java
+// 从 putVal 传入的参数是 1， binCount，binCount 默认是0，只有 hash 冲突了才会大于 1.且他的大小是链表的长度（如果不是红黑数结构的话）。
+private final void addCount(long x, int check) {
+    CounterCell[] as; long b, s;
+    // 如果计数盒子不是空 或者
+    // 如果修改 baseCount 失败
+    if ((as = counterCells) != null ||
+        !U.compareAndSwapLong(this, BASECOUNT, b = baseCount, s = b + x)) {
+        CounterCell a; long v; int m;
+        boolean uncontended = true;
+        // 如果计数盒子是空（尚未出现并发）
+        // 如果随机取余一个数组位置为空 或者
+        // 修改这个槽位的变量失败（出现并发了）
+        // 执行 fullAddCount 方法。并结束
+        if (as == null || (m = as.length - 1) < 0 ||
+            (a = as[ThreadLocalRandom.getProbe() & m]) == null ||
+            !(uncontended =
+              U.compareAndSwapLong(a, CELLVALUE, v = a.value, v + x))) {
+            fullAddCount(x, uncontended);
+            return;
+        }
+        if (check <= 1)
+            return;
+        s = sumCount();
+    }
+    // 如果需要检查,检查是否需要扩容，在 putVal 方法调用时，默认就是要检查的。
+    if (check >= 0) {
+        Node<K,V>[] tab, nt; int n, sc;
+        // 如果map.size() 大于 sizeCtl（达到扩容阈值需要扩容） 且
+        // table 不是空；且 table 的长度小于 1 << 30。（可以扩容）
+        while (s >= (long)(sc = sizeCtl) && (tab = table) != null &&
+               (n = tab.length) < MAXIMUM_CAPACITY) {
+            // 根据 length 得到一个标识
+            int rs = resizeStamp(n);
+            // 如果正在扩容
+            if (sc < 0) {
+                // 如果 sc 的低 16 位不等于 标识符（校验异常 sizeCtl 变化了）
+                // 如果 sc == 标识符 + 1 （扩容结束了，不再有线程进行扩容）（默认第一个线程设置 sc ==rs 左移 16 位 + 2，当第一个线程结束扩容了，就会将 sc 减一。这个时候，sc 就等于 rs + 1）
+                // 如果 sc == 标识符 + 65535（帮助线程数已经达到最大）
+                // 如果 nextTable == null（结束扩容了）
+                // 如果 transferIndex <= 0 (转移状态变化了)
+                // 结束循环 
+                if ((sc >>> RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 ||
+                    sc == rs + MAX_RESIZERS || (nt = nextTable) == null ||
+                    transferIndex <= 0)
+                    break;
+                // 如果可以帮助扩容，那么将 sc 加 1. 表示多了一个线程在帮助扩容
+                if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1))
+                    // 扩容
+                    transfer(tab, nt);
+            }
+            // 如果不在扩容，将 sc 更新：标识符左移 16 位 然后 + 2. 也就是变成一个负数。高 16 位是标识符，低 16 位初始是 2.
+            else if (U.compareAndSwapInt(this, SIZECTL, sc,
+                                         (rs << RESIZE_STAMP_SHIFT) + 2))
+                // 更新 sizeCtl 为负数后，开始扩容。
+                transfer(tab, null);
+            s = sumCount();
+        }
+    }
+```
+

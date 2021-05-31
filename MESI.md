@@ -2,8 +2,6 @@
 
 ## CPU缓存一致性协议MESI
 
-------
-
 ### CPU高速缓存（Cache Memory）
 
 ------

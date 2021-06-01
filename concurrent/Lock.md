@@ -11,17 +11,17 @@ lock.lock() //加锁
 lock.unlock() //解锁
 ```
 
-> ReentrantLock如何实现synchronized不具备的公平与非公平性呢？
+ReentrantLock如何实现synchronized不具备的公平与非公平性呢？
 
-> 在ReentrantLock内部定义了一个Sync的内部类，该类继承AbstractQueuedSynchronized，对该抽象类的部分方法做了实现；并且还定义了两个子类：
+在ReentrantLock内部定义了一个Sync的内部类，该类继承AbstractQueuedSynchronized，对该抽象类的部分方法做了实现；并且还定义了两个子类：
 
-> 1、FairSync 公平锁的实现
+1、FairSync 公平锁的实现
 
-> 2、NonfairSync 非公平锁的实现
+2、NonfairSync 非公平锁的实现
 
-> 这两个类都继承自Sync，也就是间接继承了AbstractQueuedSynchronized，所以这一个ReentrantLock同时具备公平与非公平特性。
+这两个类都继承自Sync，也就是间接继承了AbstractQueuedSynchronized，所以这一个ReentrantLock同时具备公平与非公平特性。
 
-> 上面主要涉及的设计模式：模板模式-子类根据需要做具体业务实现
+上面主要涉及的设计模式：模板模式-子类根据需要做具体业务实现
 
 ### AQS具备特性
 

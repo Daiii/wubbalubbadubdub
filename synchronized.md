@@ -192,7 +192,7 @@ HotSpot虚拟机的**对象头**包括两部分信息，第一部分是**“Mark
 
 ```java
 System.out.println(ClassLayout.parseInstance(object).toPrintable());
-object为我们的锁对象
+//object为我们的锁对象
 ```
 
 ### 锁的膨胀升级过程

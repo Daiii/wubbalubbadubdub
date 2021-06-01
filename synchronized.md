@@ -245,8 +245,6 @@ System.out.println(ClassLayout.parseInstance(object).toPrintable());
 
 在Java代码运行时，通过JVM参数可指定是否开启逃逸分析， -XX:+DoEscapeAnalysis ： 表示开启逃逸分析 -XX:-DoEscapeAnalysis ： 表示关闭逃逸分析。从jdk 1.7开始已经默认开启逃逸分析，如需关闭，需要指定-XX:-DoEscapeAnalysis
 
-关于逃逸分析的案例论证见Git课程源码
-
 ```java
 public class T0_ObjectStackAlloc {
     /**

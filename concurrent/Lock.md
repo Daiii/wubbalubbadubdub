@@ -66,13 +66,13 @@ AQS定义两种队列
 
 AQS当中的同步等待队列也称CLH队列，CLH队列是Craig、Landin、Hagersten三人发明的一种基于双向链表数据结构的队列，是FIFO先入先出线程等待队列，Java中的CLH队列是原CLH队列的一个变种,线程由原自旋机制改为阻塞机制。
 
-​    ![0](concurrent/images/AQS_LOCK1.png)
+​    ![0](images/AQS_LOCK1.png)
 
 #### 条件等待队列
 
 Condition是一个多线程间协调通信的工具类，使得某个，或者某些线程一起等待某个条件（Condition）,只有当该条件具备时，这些等待线程才会被唤醒，从而重新争夺锁
 
-​    ![0](concurrent/images/AQS_LOCK2.png)
+​    ![0](images/AQS_LOCK2.png)
 
 #### AQS源码分析
 

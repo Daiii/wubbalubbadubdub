@@ -97,7 +97,7 @@ public boolean add(E e) {
 }
 
 public boolean offer(E e) {    
-		// 元素不可为空
+  	// 元素不可为空
   	checkNotNull(e);
     final ReentrantLock lock = this.lock;    
     lock.lock();// 加锁
@@ -121,10 +121,10 @@ public void put(E e) throws InterruptedException {
   	// 加锁，如果线程中断了抛出异常
     lock.lockInterruptibly();
     try {             
-        // 这里之所以使用while而不是if,是因为有可能多个线程阻塞在lock上,即使唤醒了可能其它线程先一步修改了队列又变成满的了,因此必须重新判断，再次等待
-				// 如果数组满了，使用notFull等待
+      	// 这里之所以使用while而不是if,是因为有可能多个线程阻塞在lock上,即使唤醒了可能其它线程先一步修改了队列又变成满的了,因此必须重新判断，再次等待
+      	// 如果数组满了，使用notFull等待
       	while (count == items.length)
-						// notFull等待表示现在队列满了,等待被唤醒(只有取走一个元素后，队列才不满)        
+          	// notFull等待表示现在队列满了,等待被唤醒(只有取走一个元素后，队列才不满)        
           	notFull.await();
         enqueue(e);// 入队
     } finally {
@@ -138,7 +138,7 @@ public boolean offer(E e, long timeout, TimeUnit unit)throws InterruptedExceptio
     final ReentrantLock lock = this.lock;
     lock.lockInterruptibly();
     try {
-        // 如果数组满了，就阻塞nanos纳秒，如果唤醒这个线程时依然没有空间且时间到了就返回false
+      	// 如果数组满了，就阻塞nanos纳秒，如果唤醒这个线程时依然没有空间且时间到了就返回false
         while (count == items.length) {
             if (nanos <= 0)
                 return false;
@@ -216,8 +216,8 @@ public E poll(long timeout, TimeUnit unit) throws InterruptedException {
     final ReentrantLock lock = this.lock;
     lock.lockInterruptibly();
     try {
-        // 如果队列无元素，则阻塞等待nanos纳秒
-        // 如果下一次这个线程获得了锁但队列依然无元素且已超时就返回null
+      	// 如果队列无元素，则阻塞等待nanos纳秒
+      	// 如果下一次这个线程获得了锁但队列依然无元素且已超时就返回null
         while (count == 0) {
             if (nanos <= 0)
                 return null;
@@ -239,7 +239,7 @@ private E dequeue() {
   	// 将指针前移，如果数组到头了就返回数组前端循环利用
     if (++takeIndex == items.length)
         takeIndex = 0;  
-		// 元素数量减1
+  	// 元素数量减1
   	count--;
     if (itrs != null)
         itrs.elementDequeued();
@@ -276,7 +276,7 @@ public boolean remove(Object o) {
                     removeAt(i);
                     return true;
                 }
-                //若为true，说明已到数组尽头，将i设置为0,继续查找
+              	//若为true，说明已到数组尽头，将i设置为0,继续查找
                 if (++i == items.length)
                     i = 0; 
             } while (i != putIndex);//不等继续查找，如果相等，说明队列已经查找完毕
@@ -302,23 +302,23 @@ void removeAt(final int removeIndex) {
           	//更新迭代器中的数据
             itrs.elementDequeued();
     } else {
-        //如果要删除的元素不在队列头部，
-        //那么只需循环迭代把删除元素后面的所有元素往前移动一个位置
-        //获取下一个要被添加的元素的索引，作为循环判断结束条件
+      	//如果要删除的元素不在队列头部，
+      	//那么只需循环迭代把删除元素后面的所有元素往前移动一个位置
+      	//获取下一个要被添加的元素的索引，作为循环判断结束条件
         final int putIndex = this.putIndex;
-        //执行循环
+      	//执行循环
         for (int i = removeIndex;;) {
-            //获取要删除节点索引的下一个索引
+          	//获取要删除节点索引的下一个索引
             int next = i + 1;
-            //判断是否已为数组长度，如果是从数组头部（索引为0）开始找
+          	//判断是否已为数组长度，如果是从数组头部（索引为0）开始找
             if (next == items.length)
                 next = 0;
-            //如果查找的索引不等于要添加元素的索引，说明元素可以再移动
+          	//如果查找的索引不等于要添加元素的索引，说明元素可以再移动
             if (next != putIndex) {
                 items[i] = items[next];//把后一个元素前移覆盖要删除的元
                 i = next;
             } else {
-                //在removeIndex索引之后的元素都往前移动完毕后清空最后一个元素
+              	//在removeIndex索引之后的元素都往前移动完毕后清空最后一个元素
                 items[i] = null;
                 this.putIndex = i;
                 break;//结束循环

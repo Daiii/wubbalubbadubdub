@@ -52,10 +52,10 @@ public ArrayBlockingQueue(int capacity, boolean fair) {
 }
 
 public ArrayBlockingQueue(int capacity, boolean fair, Collection<? extends E> c) {
-		//final修饰的变量不会发生指令重排
+  	//final修饰的变量不会发生指令重排
   	this(capacity, fair);
     final ReentrantLock lock = this.lock;
-		//保证可见性 不是为了互斥  防止指令重排 保证item的安全
+  	//保证可见性 不是为了互斥  防止指令重排 保证item的安全
   	lock.lock(); 
     try {
         int i = 0;

@@ -40,7 +40,7 @@ public class SemaphoreRunner {
     public static void main(String[] args) {
         Semaphore semaphore = new Semaphore(2);
         for (int i=0;i<5;i++){
-            new Thread(new Task(semaphore,"yangguo+"+i)).start();
+            new Thread(new Task(semaphore,"zhangbo+"+i)).start();
         }
     }
 

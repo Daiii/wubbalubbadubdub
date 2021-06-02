@@ -1425,8 +1425,7 @@ public abstract class AbstractQueuedSynchronizer
 }
 
 
-AQS框架具体实现-独占锁实现ReentrantLock
-
+//AQS框架具体实现-独占锁实现ReentrantLock
 public class ReentrantLock implements Lock, java.io.Serializable {
     private static final long serialVersionUID = 7373984872572414699L;
     /**

@@ -127,3 +127,20 @@ key_len计算规则：
 5. Using index condition：5.6之后新增的，表示查询的列有非索引的列，先判断索引的条件，以减少磁盘IO。
 6. Using join buffer：使用了连接缓存。
 7. impos where：where子句的值总是false。
+
+### 索引使用总结
+
+**index(a,b,c)**
+
+| where语句                                                | 索引是否被使用                         |
+| -------------------------------------------------------- | -------------------------------------- |
+| where a = 3                                              | Y，使用到a                             |
+| where a = 3 and b = 5                                    | Y，使用到a，b                          |
+| where a = 3 and b = 5 and c = 4                          | Y，使用到a，b，c                       |
+| where b = 3 或者 where b = 3 and  c = 4 或者 where c = 4 | N                                      |
+| where a = 3 and c = 4                                    | 使用到a，但是c不可以，因为b中间断了    |
+| where a = 3 and b > 4 and c = 5                          | 使用到a和b，c不能再范围之后，因为b断了 |
+| where a = 3 and b like 'kk%' and c = 5                   | Y，使用到a，b，c                       |
+| where a = 3 and b like '%kk' and c = 5                   | 使用到a，因为b中间断了                 |
+| where a = 3 and b like '%kk%' and c = 5                  | 使用到a，因为b中间断了                 |
+| where a = 3 and b like 'k%kk%' and c = 5                 | Y，使用到a，b，c                       |

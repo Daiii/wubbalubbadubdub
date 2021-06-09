@@ -1,6 +1,6 @@
 [toc]
 
-## exlain
+## explain
 
 MySQL官网：https://dev.mysql.com/doc/refman/5.7/en/explain.html
 
@@ -14,7 +14,7 @@ explain是能解释MySQL如果处理SQL语句，表的加载顺序，表是如�
 
 ![explain字段](images/explain1.png)
 
-概要描述：
+**概要描述**：
 
 * id:选择标识符
 * select_type:表示查询的类型
@@ -85,6 +85,22 @@ SELECT识别符，可以理解为SELECT的查询序列号。
 表示索引中使用的字节数，可通过该列计算查询中使用的索引的长度(key_len显示的值为索引字段的最大可能长度，并非实际使用长度，即key_len是根据表定义计算而得，不是通过表内检索出的)。
 
 不损失精确性的情况下，长度越短越好 。
+
+key_len计算规则：
+
+* 字符串
+  * char(n)：n字节长度
+  * varchar(n)：如果是utf-8，则长度3n+2字节，加的2字节用来存储字符串长度
+* 数值类型
+  * tinyint：1字节
+  * smallint：2字节
+  * int：4字节
+  * bigint：8字节
+* 时间类型
+  * date：3字节
+  * timestamp：4字节
+  * datetime：8字节
+* 如果字段允许为NULL，需要一个字节记录是否为NULL
 
 #### ref
 

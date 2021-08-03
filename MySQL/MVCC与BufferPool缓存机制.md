@@ -4,7 +4,7 @@
 
 ### MVCC多版本并发控制机制
 
-可重复度隔离级别下是通过MVCC(**Multi-Version Concurrent参与Control**)机制来保证的，对一行数据的读和写两个操作默认是不会通过加锁互斥来保证隔离性，避免了频繁加锁互斥，而在串行化隔离级别为了保证较高的隔离性是通过将所有操作加锁互斥来实现的。
+可重复度隔离级别下是通过MVCC(**Multi-Version Concurrentcy Control**)机制来保证的，对一行数据的读和写两个操作默认是不会通过加锁互斥来保证隔离性，避免了频繁加锁互斥，而在串行化隔离级别为了保证较高的隔离性是通过将所有操作加锁互斥来实现的。
 
 MySQL在读已提交和可重复读隔离级别下都实现了MVCC机制。
 
@@ -30,7 +30,7 @@ undo日志版本链是指一行数据被多个事务依次修改后，在每个�
 
 **个人理解**
 
-* 可重复读：取生成read-view前最后一次commit的trx_id，不管后续事务commit都不影响当前事务的read-view
+* 可重复读：取生成read-view前最后一次commit的trx_id，不管后续其他事务commit都不影响当前事务的read-view
 * 读已提交：每次select都会生成最新的read-view，取最新的trx_id结果
 
 ## InnoDB引擎执行SQL的BufferPool缓存机制
